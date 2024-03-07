@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Medicine</title>
+    <link rel="stylesheet" href="add_medicine.css">
+</head>
+<body>
+    <section class="title"><h1>Search Medicine</h1></section>
+    <div class="container" >
+        <form id="searchForm" method="post" action="" name="search-form">
+            <label for="barcode">Enter Barcode:</label>
+            <input type="text" id="barcode" name="barcode" required>
+            <input type="hidden" name="action" value="search"> <!-- Hidden field for action -->
+            <input type="submit" value="Search" id="submit">
+        </form>
+        <div id="loadingIndicator" style="display: none;">Searching data...</div>
+        <div id="message"></div>
+        <a href="index.html"><button>Main Menu</button></a>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzWw6X1cPIMJzVUDcAX8AgrpfmNkrIJmC-PF4VXCOWgVxxhK1L7Cze-xKCgRbQVfXyTXA/exec';
+        const form = document.forms['search-form'];
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const messageDiv = document.getElementById('message');
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => response.json())
+                .then(data => {
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+
+                    // Display success or error message
+                    if (data.result === 'success') {
+                        displayMedicineDetails(data.medicine);
+                    } else {
+                        messageDiv.innerText = data.message || 'An error occurred.';
+                    }
+                    form.reset(); // Reset the form after submission
+                })
+                .catch(error => {
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+
+                    console.error('Error!', error.message);
+                });
+        });
+
+        function displayMedicineDetails(medicine) {
+            const detailsContainer = document.createElement('div');
+            detailsContainer.innerHTML = '<h2>Medicine Details</h2>';
+            for (const key in medicine) {
+                if (Object.hasOwnProperty.call(medicine, key)) {
+                    const detail = document.createElement('p');
+                    detail.innerText = `${key}: ${medicine[key]}`;
+                    detailsContainer.appendChild(detail);
+                }
+            }
+            messageDiv.innerHTML = '';
+            messageDiv.appendChild(detailsContainer);
+        }
+    </script>
+</body>
+</html>

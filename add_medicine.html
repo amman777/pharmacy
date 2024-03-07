@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Storage</title>
+    <link rel="stylesheet" href="add_medicine.css">
+</head>
+<body>
+    <section class="title"><h1>Update Storage</h1></section>
+    <div class="container" >
+        <form id="medicineForm" method="post" action="" name="contact-form">
+            <label for="barcode">Enter Barcode:</label>
+            <input type="text" id="barcode" name="barcode" required>
+            <label for="medicineName">Enter Medicine Name:</label>
+            <input type="text" id="medicineName" name="medicineName" required>
+            <label for="price">Enter Price of 1 Tablet (Rs):</label>
+            <input type="number" id="price" name="price" required>
+            <label for="quantity">Enter the Quantity of Medicine:</label>
+            <input type="number" id="quantity" name="quantity" required>
+            <label for="expiryDate">Enter Expiry Date (DD-MM-YYYY):</label>
+            <input type="date" id="expiryDate" name="expiryDate" required>
+            <input type="hidden" name="action" value="add"> <!-- Add this line -->
+            <input type="submit" value="Submit" id="submit">
+        </form>
+        <div id="loadingIndicator" style="display: none;">Sending data...</div>
+        <a href="index.html"><button>Main Menu</button></a>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbzWw6X1cPIMJzVUDcAX8AgrpfmNkrIJmC-PF4VXCOWgVxxhK1L7Cze-xKCgRbQVfXyTXA/exec';
+        const form = document.forms['contact-form'];
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        
+        form.addEventListener('submit', e => {
+            e.preventDefault();
+            
+            // Show loading indicator
+            loadingIndicator.style.display = 'block';
+
+            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+                .then(response => {
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+
+                    alert("Data Loaded.");
+                    form.reset(); // Reset the form after successful submission
+                })
+                .catch(error => {
+                    // Hide loading indicator
+                    loadingIndicator.style.display = 'none';
+
+                    console.error('Error!', error.message);
+                });
+        });
+    </script>
+</body>
+</html>

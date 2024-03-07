@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bill Generation</title>
+    <link rel="stylesheet" href="bill.css">
+</head>
+<body>
+    <section class="title"><h1>Bill Generation</h1></section>
+    <div class="container">
+        <div class="customer-section">
+            <form id="customerForm">
+                <input type="text" id="customerName" name="customerName" required placeholder="Customer Name">
+                <label for="phoneNumber"></label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required pattern="[0-9]{10}" placeholder="Phone Number">
+            </form>
+        </div>
+        <div class="barcode-section">
+            <form id="searchForm" method="post" action="" name="search-form">
+                <input type="text" id="barcode" name="barcode" required placeholder="Enter Barcode:">
+                <input type="number" id="quantity" name="quantity" required placeholder="Enter Quantity:">
+                <input type="hidden" name="action" value="bill"> 
+                <input type="button" value="Fetch Medicine" id="fetchMedicineBtn"> <!-- Change type to button -->
+            </form>
+        </div>
+       
+        <div id="loadingIndicator" style="display: none;">Fetching data...</div>
+        <div id="message"></div>
+        
+        <div id="medicineDetails" style="display: none;">
+            <h2>Invoice Details</h2>
+            <div id="medicineDetailsContent"></div>
+        </div>
+        
+        <div class="labels">
+            <p>Invoice</p>
+            <p>Name</p>
+            <p>Phone number</p>
+            <p>Barcode</p>
+            <p>Medicine Name</p>
+            <p>Quantity</p>
+            <p>price</p>
+            <p>Amount</p>  
+        </div>
+        
+        <div id="medicineFormFields"></div>
+        <div id="loadingIndicator2" style="display: none;">Sending data...</div>
+        <!-- Your existing HTML code -->
+        <div id="totalForm" style="display: none;">
+            <h3>Total Amount</h3>
+            <form id="totalForm">
+                <input type="text" id="totalAmount" name="totalAmount" readonly>
+            </form>
+        </div>
+        <div id="buttons">
+            <a href="index.html"><button>Main Menu</button></a>
+            <button id="submitBtn">Submit</button>
+            <button id="printBtn">Print</button>
+            <button id="totalBtn">Total</button> <!-- New Total button -->
+             <!-- New Total button -->
+        </div>
+        
+    </div>
+    
+    <script src="bill.js"></script>
+</body>
+</html>
